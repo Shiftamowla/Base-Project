@@ -28,7 +28,7 @@
 
         h2 {
             text-align: center;
-            color: #A0522D; /* Accent color */
+            color: #000f30; /* Accent color */
             margin-bottom: 30px;
             font-size: 2em;
         }
@@ -75,7 +75,7 @@
         }
 
         .recipe-title {
-            color: #A0522D; /* Sienna color for recipe titles */
+            color: #000f30; /* Sienna color for recipe titles */
             font-size: 2em; /* Larger font size for titles */
             margin: 0;
             font-family: 'Playfair Display', serif; /* Elegant font for titles */
@@ -109,7 +109,7 @@
         /* Style for bold labels */
         .label {
             font-weight: bold; /* Make label bold */
-            color: #A0522D; /* Sienna color for contrast */
+            color:  #158302; /* Sienna color for contrast */
             text-align: left; /* Align labels to the left */
             margin-bottom: 5px; /* Space between label and text */
             font-size: 1.1em; /* Slightly larger font size for labels */
@@ -126,7 +126,7 @@
             display: inline-block;
             margin-top: 15px;
             padding: 12px 20px;
-            background-color: #5A2A1D; /* Dark brown for buttons */
+            background-color: #000f30; /* Dark brown for buttons */
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -136,7 +136,7 @@
         }
 
         .apply-button:hover {
-            background-color: #7B4A3A; /* Lighter brown on hover */
+            background-color: #026983; /* Lighter brown on hover */
         }
     </style>
 </head>
@@ -160,15 +160,37 @@
                 <img src="/{{ i.Image }}" alt="Company Logo">
             </div>
             {% endfor %}
+            
+                
+                
+            <p>User name: <strong>{{ user.username }}</strong></p>
             <p>User Type: <strong>{{ user.user_type }}</strong></p>
             <p>Email: <strong>{{ user.email }}</strong></p>
+
+
             
             {% for i in exp %}
-            <a href="#" class="apply-button">Update Profile</a>
+            <a href="{% url 'updateprofile' i.id %}" class="apply-button">Update Profile</a>
+            <div class="section skills">
+                <h2>Skills</h2>
+                <ul>
+                    {% for i in Skills %}
+                        <li>{{ i.skill_name }} - {{ i.proficiency_level }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <a href="{% url 'skilldeletepage' %}" class="apply-button">skilldeletepage</a>
             {% endfor %}
             {% for i in edu %}
+            <a href="{% url 'updateprofile' i.id %}" class="apply-button">Update Profile</a>
+            <a href="{% url 'Table' %}" class="apply-button">JobTable</a>
             <a href="#" class="apply-button">Update Profile</a>
             {% endfor %}
+
+
+
+
+
         </div>
     </div>
 

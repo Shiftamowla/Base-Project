@@ -10,7 +10,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #A0522D;
+  background-color: #000f30;
 }
 
 li {
@@ -26,7 +26,7 @@ li a, .dropbtn {
 }
 
 li a:hover, .dropdown:hover .dropbtn {
-  background-color: #722400;
+  background-color: #026983;
 }
 
 li.dropdown {
@@ -36,7 +36,7 @@ li.dropdown {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #A0522D;
+  background-color: #000f30;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
@@ -50,7 +50,7 @@ li.dropdown {
   text-align: left;
 }
 
-.dropdown-content a:hover {background-color: #722400;}
+.dropdown-content a:hover {background-color: #026983;}
 
 .dropdown:hover .dropdown-content {
   display: block;
@@ -60,10 +60,10 @@ li.dropdown {
 <body>
 
 <ul>
-  <li><a href="#">Post</a></li>
-  {% if user.user_type == 'creator' %}
+  <li><a href="{% url 'jobfeed' %}">Post</a></li>
+  {% if user.user_type == 'recruiters' %}
 
-  <li><a href="#">Add Post</a></li>
+  <li><a href="{% url 'Addjob' %}">Add Post</a></li>
   {% endif %}
   <li><a href="{% url 'Profile' %}">Profile</a></li>
   <li class="dropdown">
