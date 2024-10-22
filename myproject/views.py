@@ -90,26 +90,64 @@ def deletejob(req,id):
     job.delete()
     return redirect('Table')
 
-def appliedjob(req):
-    current_user=req.user
-    if current_user.user_type == "recruiter":
-        if req.method == 'POST':
-            job=ApplyJobModel()
-            job.user=current_user
-            job.job_title=req.POST.get('job_title')
-            job.company_type=req.POST.get('company_type')
-            job.company_logo=req.FILES.get('company_logo')
-            job.location=req.POST.get('location')
-            job.company_name=req.POST.get('company_name')
-            job.description=req.POST.get('description')
-            job.salary=req.POST.get('salary')
-            job.application_deadline=req.POST.get('application_deadline')
-            job.posted_on=req.POST.get('posted_on')
-            job.save()
-            
-            return redirect('jobfeed')
+def appliedJob(request):
+    current_user = request.user
 
-    return render(req, 'applyjob.html')
+    # Get all job applications for the current user
+    job_applications = ApplyJobModel.objects.filter(user=current_user)
+
+    job_messages = {}
+    for job_application in job_applications:
+        messages = ApplyJobModel.objects.filter(application=job_application)
+        job_messages[job_application.id] = messages
+
+    context = {
+        "Job": job_applications,
+        "job_messages": job_messages, 
+    }
+    return render(request, "Seeker/appliedJob.html", context)
+
+def ApplyNow(req,job_title,apply_id):
+    
+    current_user=req.user
+    
+    if current_user.user_type == 'jobseeker':
+        
+        specific_job=JobModel.objects.get(id=apply_id)
+        
+        already_exists=ApplyJobModel.objects.filter(user=current_user,job=specific_job).exists()
+        
+        context={
+            'specific_job':specific_job,
+            'already_exists':already_exists
+        }   
+        if req.method=='POST':
+            Full_Name=req.POST.get("Full_Name")
+            Work_Experience=req.POST.get("Work_Experience")
+            Skills=req.POST.get("Skills")
+            Linkedin_URL=req.POST.get("Linkedin_URL")
+            Expected_Salary=req.POST.get("Expected_Salary")
+            Resume=req.FILES.get("Resume")
+            Cover=req.POST.get("Cover")
+            
+            apply=ApplyJobModel(
+                user=current_user,
+                job=specific_job,
+                Resume=Resume,
+                Full_Name=Full_Name,
+                Work_Experience=Work_Experience,
+                Skills=Skills,
+                Expected_Salary=Expected_Salary,
+                Linkedin_URL=Linkedin_URL,
+                Cover=Cover,
+                status="pending"
+            )
+            apply.save()
+            return redirect("jobfeed")
+            
+        return render(req,"applyjob.html",context)
+    else:
+        messages.warning(req,"You are not a Job Seeker")
 
 def editjob(req,id):
     current_user=req.user
@@ -275,43 +313,60 @@ def Profile(req):
 
 
 def updateprofile(req,id):
-    data=CreatorProfileModel.objects.filter(id=id)
-    dataa=viewersProfileModel.objects.filter(id=id)
-    cust=Custom_user.objects.filter(id=id)
+    current_user=req.user
+    
     if req.method=='POST':
-        id=req.POST.get('id')
         username=req.POST.get("username")
         email=req.POST.get("email")
-        user_type=req.POST.get("user_type")
         first_name=req.POST.get("first_name")
         last_name=req.POST.get("last_name")
-        Image=req.FILES.get('Image')
-        oldimg=req.POST.get('oldimg')
+        company_logo_old=req.POST.get("company_logo_old")
+        Image=req.FILES.get("Image")
+        
+        
+        current_user.username=username
+        current_user.email=email
+        current_user.first_name=first_name
+        current_user.last_name=last_name
+        
+        
+        try:
+            creatorProfile=CreatorProfileModel.objects.get(user=current_user)
+            if Image:
+                creatorProfile.Image=Image
+                creatorProfile.save()
+                current_user.save()
 
-        user_object=Custom_user.objects.get(id=id)
+            else:
+                creatorProfile.Image=company_logo_old
+                creatorProfile.save()
+                current_user.save()
+            
+            return redirect("Profile")
+            
+        except CreatorProfileModel.DoesNotExist:
+            creatorProfile=None
+            
+        try:
+            viewersProfile=viewersProfileModel.objects.get(user=current_user)
 
-        add=viewersProfileModel(
-            id=id,
-            user=user_object,
-            username=username,
-            email=email,
-            user_type=user_type,
-            first_name=first_name,
-            last_name=last_name,
-        )
-        if Image:
-          add.Image=Image
-          add.save()
-        else:
-         add.Image=oldimg
-         add.save()
-        return redirect ('Profile')
-    context={
-        'data':data,
-        'dataa':dataa,
-        'cust':cust,
-    }
-    return render (req,'updateprofile.html',context)
+            if Image:
+                viewersProfile.Image=Image
+                viewersProfile.save()
+                current_user.save()
+
+            else:
+                viewersProfile.Image=company_logo_old
+                viewersProfile.save()
+                current_user.save()
+
+            
+            return redirect("Profile")
+            
+        except viewersProfileModel.DoesNotExist:
+            viewersProfile=None
+
+    return render (req,'updateprofile.html')
 
 def addSkill(req):
     current_user=req.user

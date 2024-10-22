@@ -171,6 +171,10 @@
             
             {% for i in exp %}
             <a href="{% url 'updateprofile' i.id %}" class="apply-button">Update Profile</a>
+            <a href="#" class="apply-button">Skill</a>
+            <a href="#" class="apply-button">Applyed Jobs</a>
+            {% endfor %}
+
             <div class="section skills">
                 <h2>Skills</h2>
                 <ul>
@@ -179,12 +183,9 @@
                     {% endfor %}
                 </ul>
             </div>
-            <a href="{% url 'skilldeletepage' %}" class="apply-button">skilldeletepage</a>
-            {% endfor %}
             {% for i in edu %}
             <a href="{% url 'updateprofile' i.id %}" class="apply-button">Update Profile</a>
             <a href="{% url 'Table' %}" class="apply-button">JobTable</a>
-            <a href="#" class="apply-button">Update Profile</a>
             {% endfor %}
 
 

@@ -153,7 +153,7 @@
             <a href="{% url 'mainprofile' i.id %}" class="apply-button">View Job</a>
              {% if user.user_type == 'jobseeker' %}
 
-            <a href="{% url 'appliedjob'  %}" class="apply-button">Applied Job</a>
+            <a href="{% url 'ApplyNow' i.job_title i.id  %}" class="apply-button">Applied Job</a>
              {% endif %}
 
 

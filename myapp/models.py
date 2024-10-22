@@ -22,7 +22,7 @@ class viewersProfileModel(models.Model):
         return f"{self.user.username}"   
     
 class CreatorProfileModel(models.Model):
-    user = models.OneToOneField(Custom_user, on_delete=models.CASCADE,related_name='bloggersProfile')
+    user = models.OneToOneField(Custom_user, on_delete=models.CASCADE,related_name='creatorProfile')
     Image=models.ImageField(upload_to='Media/Blog_Pic',null=True)
     
     def __str__(self):

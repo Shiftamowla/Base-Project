@@ -1,103 +1,97 @@
-
-{% extends 'base.html' %}
+{% extends 'Common/base.html' %}
 
 {% block body %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Job</title>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <title>Job Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
-            font-family: 'Libre Baskerville', serif; /* Classic serif font */
-            background: url('https://www.toptal.com/designers/subtlepatterns/patterns/white-paper.png'); /* Subtle background pattern */
-            margin: 0;
             padding: 20px;
+            background-color: #e9ecef;
         }
-
-        h3 {
-            text-align: center;
-            color: #000f30; /* Dark brown for headings */
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        div {
-            border-radius: 8px;
-            background-color: #f2f2f2;
+        .form-container {
+            background-color: #ffffff;
             padding: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: auto;
         }
-
-        input[type=text], select, input[type=file] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 1em; /* Consistent font size */
+        h1 {
+            margin-bottom: 20px;
         }
-
-        input[type=submit] {
-            width: 100%;
-            background-color: #000f30; /* Dark brown */
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
+        .btn-primary {
+            background-color: #007bff;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
         }
-
-        input[type=submit]:hover {
-            background-color: #026983; /* Lighter brown on hover */
-            transform: scale(1.02); /* Slightly enlarge on hover */
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
-
-        label {
+        .form-group label {
             font-weight: bold;
-            color: #333; /* Dark text for labels */
-            margin-bottom: 5px;
-            display: block; /* Ensures label appears above input */
+        }
+        .form-control, .form-control-file {
+            border-radius: 5px;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #007bff;
         }
     </style>
 </head>
 <body>
 
-<h3>Add Job</h3>
+<div class="container">
+    <div class="form-container">
 
-<div>
-    <form action="{% url 'appliedjob' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <label for="recipe_title">Title</label>
-        <input type="text" id="Title" name="job_title" placeholder="Enter recipe title..." required>
-    
-        <label for="nutritional_info">Skills</label>
-        <input type="text" id="nutritional_info" name="Skills" placeholder="Enter nutritional info..." required>
-    
-        <label for="category">Category</label>
-        <select id="category" name="Category" required>
-          <option value="politics">fulltime</option>
-          <option value="sports">parttime</option>
-        </select>
-    
-        <label for="ingredients">Job Description</label>
-        <input type="text" id="ingredients" name="Job_Description" placeholder="Enter ingredients..." required>
-    
-        <label for="instructor">Number of Opening</label>
-        <input type="text" id="instructor" name="Number_of_opening" placeholder="Enter instructor name..." required>
-        
-        <label for="image">Image</label>
-        <input type="file" id="image" name="company_logo" required>
-    <input type="submit" value="Submit">
-  </form>
+        <h1>You are going to apply for {{ specific_job.job_title }}</h1>
+
+        {% if already_exists %}
+            <h2 class="text-danger">Already Applied</h2>
+        {% else %}
+            <form action=" " method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" name="Full_Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="workExperience">Work Experience</label>
+                    <input type="text" class="form-control" id="workExperience" name="Work_Experience" required>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <input type="text" class="form-control" id="skills" name="Skills" required>
+                </div>
+                <div class="form-group">
+                    <label for="linkedinUrl">LinkedIn URL</label>
+                    <input type="url" class="form-control" id="linkedinUrl" name="Linkedin_URL">
+                </div>
+                <div class="form-group">
+                    <label for="expectedSalary">Expected Salary</label>
+                    <input type="number" class="form-control" id="expectedSalary" name="Expected_Salary" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="resume">Resume (PDF, DOC, DOCX)</label>
+                    <input type="file" class="form-control-file" id="resume" name="Resume" accept=".pdf,.doc,.docx" required>
+                </div>
+                <div class="form-group">
+                    <label for="cover">Cover Letter</label>
+                    <textarea class="form-control" id="cover" name="Cover" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit Application</button>
+            </form>
+        {% endif %}
+
+    </div>
 </div>
 
 </body>

@@ -103,10 +103,12 @@
     <input type="text" id="instructor" value="{{i.Number_of_opening}}" name="Number_of_opening" placeholder="Enter instructor name..." required>
     
     <label for="image">Image</label>
-    <input type="file" id="image" value="/{{i.company_logo}}" name="company_logo" required>
+    <img  width="300px"  src="/{{i.company_logo}}" alt="">
+    <input type="file" id="image"  name="company_logo" required>
     <input type="text" id="image" value="/{{i.company_logo}}" name="company_logo_old" readonly>
 
     {% endfor %}
+
 
 
     <input type="submit" value="Submit">
