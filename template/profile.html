@@ -51,10 +51,7 @@
             color: #333; /* Dark text */
         }
 
-        .profile-info p {
-            color: #555; /* Medium gray text */
-            margin: 5px 0;
-        }
+
 
         /* Updated job post styling */
         .recipe-post {
@@ -172,17 +169,10 @@
             {% for i in exp %}
             <a href="{% url 'updateprofile' i.id %}" class="apply-button">Update Profile</a>
             <a href="#" class="apply-button">Skill</a>
-            <a href="#" class="apply-button">Applyed Jobs</a>
+            <a href="{% url 'appliedJob' %}" class="apply-button">Applyed Jobs</a>
             {% endfor %}
 
-            <div class="section skills">
-                <h2>Skills</h2>
-                <ul>
-                    {% for i in Skills %}
-                        <li>{{ i.skill_name }} - {{ i.proficiency_level }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+
             {% for i in edu %}
             <a href="{% url 'updateprofile' i.id %}" class="apply-button">Update Profile</a>
             <a href="{% url 'Table' %}" class="apply-button">JobTable</a>

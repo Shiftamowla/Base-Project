@@ -105,7 +105,7 @@ def appliedJob(request):
         "Job": job_applications,
         "job_messages": job_messages, 
     }
-    return render(request, "Seeker/appliedJob.html", context)
+    return render(request, "applyedJob.html", context)
 
 def ApplyNow(req,job_title,apply_id):
     
